@@ -136,25 +136,6 @@ class Bilibili:  # line:23
         else:  # line:194
             utools.formate_print('分享视频失败')  # line:195
 
-    def __OOO0O00OOOO0OOO0O(OO0000O0OO0O0OO0O, O0O0O00OOO0OOO00O: str, OO00OOOOO0OO00O0O: str) -> int:  # line:197
-        ""  # line:204
-        O000O0O0OO0O0O0OO = Bilibili.exchange_cookie(OO00OOOOO0OO00O0O)  # line:205
-        OO0OOO0OO00000000 = data.insert_coin_data  # line:206
-        O000OOOO0000O0O00 = data.insert_coin_headers  # line:207
-        OO0OOO0OO00000000['aid'] = O0O0O00OOO0OOO00O  # line:208
-        OO0OOO0OO00000000['csrf'] = Bilibili.get_csrf(OO00OOOOO0OO00O0O)  # line:209
-        O000OOOO0000O0O00['cookie'] = OO00OOOOO0OO00O0O  # line:210
-        O0OOO0O0000000O00 = OO0000O0OO0O0OO0O.session.post(url=api.insert_coins_url, headers=data.insert_coin_headers,
-                                                           data=OO0OOO0OO00000000,
-                                                           cookies=O000O0O0OO0O0O0OO).json()  # line:213
-        OO000000O0O00OOOO = O0OOO0O0000000O00['data']['like']  # line:214
-        if OO000000O0O00OOOO:  # line:215
-            utools.formate_print('投币成功')  # line:216
-            return 1  # line:217
-        else:  # line:218
-            utools.formate_print('投币失败')  # line:219
-            return 0  # line:220
-
     @staticmethod  # line:222
     def random_video_para(vlist: list) -> tuple:  # line:223
         ""  # line:228
@@ -165,14 +146,33 @@ class Bilibili:  # line:23
         aid = vlist[video]['aid']  # line:233
         return bvid, title, author, aid  # line:234
 
-    def coin(self, O0O00000000O0O00O: str) -> int:  # line:236
+    def coin(self, cookie_str: str) -> int:  # line:236
         ""  # line:241
-        OO000O0O0OOOOOO00 = self.get_vlist()  # line:242
-        O00000OO000000O0O, O0OO0OOOOOOOOOO00, O000OO000OO0000OO, O00000000000O0OO0 = Bilibili.random_video_para(
-            OO000O0O0OOOOOO00)  # line:244
-        utools.formate_print(f'开始向{O000OO000OO0000OO}的视频{O0OO0OOOOOOOOOO00}投币……')  # line:245
-        OOO0OOO00OOO0O0O0 = self.__OOO0O00OOOO0OOO0O(O00000000000O0OO0, O0O00000000O0O00O)  # line:246
-        return OOO0OOO00OOO0O0O0  # line:247
+        vlist = self.get_vlist()  # line:242
+        bvid, title, author, aid = Bilibili.random_video_para(
+            vlist)  # line:244
+        utools.formate_print(f'开始向{author}的视频{title}投币……')  # line:245
+        b = self.cast_coin(aid, cookie_str)  # line:246
+        return b  # line:247
+
+    def cast_coin(self, aid: str, cookie_str: str) -> int:  # line:197
+        """"""  # line:204
+        cookies = Bilibili.exchange_cookie(cookie_str)  # line:205
+        cc_data = data.insert_coin_data  # line:206
+        cc_headers = data.insert_coin_headers  # line:207
+        cc_data['aid'] = aid  # line:208
+        cc_data['csrf'] = Bilibili.get_csrf(cookie_str)  # line:209
+        cc_headers['cookie'] = cookie_str  # line:210
+        response = self.session.post(url=api.insert_coins_url, headers=data.insert_coin_headers,
+                                     data=cc_data,
+                                     cookies=cookies).json()  # line:213
+        like = response['data']['like']  # line:214
+        if like:  # line:215
+            utools.formate_print('投币成功')  # line:216
+            return 1  # line:217
+        else:  # line:218
+            utools.formate_print('投币失败')  # line:219
+            return 0  # line:220
 
     def __OOO0O0000000OO00O(OOOOO000OO000O00O, OOO0OOOOO0O0O0OOO: str) -> None:  # line:249
         O000O0O00OOOOOO0O = OOOOO000OO000O00O.session.get(url=api.live_sign_url, cookies=Bilibili.exchange_cookie(
