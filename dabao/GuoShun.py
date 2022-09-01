@@ -59,31 +59,45 @@ class GuoShun(object):
             ui.startButton.setText("开启")
             self.paused = False
             ui.label_status.setText("程序状态:未启动")
-            ui.label_status.setFixedWidth(500)
+            ui.label_status.setFixedWidth(1000)
         else:
             _thread.start_new_thread(self.do_vpn, ())
             self.paused = True
             ui.startButton.setText("暂停")
-            ui.label_status.setText("程序状态:运行中...")
-            ui.label_status.setFixedWidth(500)
+            ui.label_status.setText("程序状态:初始化中...")
+            ui.label_status.setFixedWidth(1000)
 
     def do_vpn(self):
+        sleepTime = self.ui.lineEdit.text()
+        # 如果输入的不是一个数字,默认2秒
+        if sleepTime is not int:
+            sleepTime = 2
         w = Woc()
         w.login()
-
-        if w.anti_csrf is not None:
-            print("登陆成功")
-
-        devices = {}
-        for key, item in w.data.items():
-            # 生成一条连接通道
-            devices[item['projectName']] = YanHua(item)
-        while self.paused:
-            w.getVpn()
-            self.setTable(w.data)
+        # 通过登陆成功返回的值来判断是否登陆成了
+        if len(w.anti_csrf) > 0:
+            self.ui.label_status.setText("程序状态:登陆成功...")
+            devices = {}
             for key, item in w.data.items():
-                devices[item['projectName']].sendData(item)
-            time.sleep(1)
+                # 生成一条连接通道
+                devices[item['projectName']] = YanHua(item)
+            while self.paused:
+                runData = w.getVpn()
+                if "ConnectionError" in runData:
+                    self.ui.label_status.setText(f"程序状态: 运行错误,原因: {runData['ConnectionError']}")
+                    self.ui.startButton.setText("开启")
+                    self.paused = False
+                    break
+                else:
+                    self.ui.label_status.setText("程序状态:运行中...")
+                self.setTable(w.data)
+                for key, item in w.data.items():
+                    devices[item['projectName']].sendData(item)
+                time.sleep(sleepTime)
+        else:
+            self.ui.startButton.setText("开启")
+            self.paused = False
+            self.ui.label_status.setText("程序状态:登陆到深信服失败,无法获取到数据...")
 
     def setTable(self, data):
         index_colspan = 0
@@ -100,7 +114,9 @@ class GuoShun(object):
             newItem = QTableWidgetItem(item['networkStatus'])
             self.ui.tableWidget.setItem(index_colspan, 3, newItem)
 
-            newItem = QTableWidgetItem(f"{item['up_bytes_insight']}Kbps/{item['down_bytes_insight']}Kbps")
+            newItem = QTableWidgetItem(f"{item['up_bytes_insight']}Kbps/{item['down_bytes_insight']}Kbps "
+                                       f"- {round(float(item['up_bytes_insight']) / (100 * 1024) * 100, 2)} % "
+                                       f"/ {round(float(item['down_bytes_insight']) / (100 * 1024) * 100, 2)} %")
             self.ui.tableWidget.setItem(index_colspan, 4, newItem)
 
             newItem = QTableWidgetItem("深信服: https://10.10.9.100")
@@ -109,12 +125,7 @@ class GuoShun(object):
             index_colspan = index_colspan + 1
 
         self.ui.tableWidget.hide()
-        self.ui.tableWidget.setFixedWidth(950)
-        self.ui.tableWidget.setColumnWidth(1, 280)
-        self.ui.tableWidget.setColumnWidth(4, 180)
-        self.ui.tableWidget.setColumnWidth(5, 160)
         self.ui.tableWidget.show()
-
         now = datetime.datetime.now()
         self.ui.label_time.setText("最近一次更新时间:" + str(now.strftime('%Y-%m-%d %H:%M:%S')))
         self.ui.label_time.setFixedWidth(800)

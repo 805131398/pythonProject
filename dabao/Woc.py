@@ -8,6 +8,8 @@ import re
 class Woc:
 
     def __init__(self):
+        # 保存错误信息
+        self.runData = {}
         # 几个固定cookie变量
         self.vpn_list = None  # 用于解析html,table表格中的数据
         # 以下 cookie 请求相关数据
@@ -25,6 +27,9 @@ class Woc:
                 "description": "石横265实时速率统计信息",
                 "vpnConnName": "fz_0001-fz0001",  # VPN连接名称
                 "isDedicatedIP": 0,
+                "ip": "",
+                "up_bytes_insight": "",
+                "down_bytes_insight": "",
                 "deviceType": "石横265VPN",
                 'networkStatus': "断网",
                 "retentionPolicyName": "...."
@@ -38,6 +43,9 @@ class Woc:
                 "isDedicatedIP": 0,
                 "deviceType": "包钢500VPN",
                 'networkStatus': "断网",
+                "ip": "",
+                "up_bytes_insight": "",
+                "down_bytes_insight": "",
                 "retentionPolicyName": "...."
             }
         }
@@ -57,9 +65,11 @@ class Woc:
             'sec-ch-ua-platform': '"Windows"',
             'Content-Type': 'application/x-www-form-urlencoded'
         }
-
-        response = requests.request("POST", url, headers=headers, data=payload, verify=False)
-
+        try:
+            response = requests.request("POST", url, headers=headers, data=payload, verify=False)
+        except requests.exceptions.ConnectionError as e:
+            self.runData['login_status'] = False
+            return self.runData
         html_resource = response.content.decode('utf-8')
 
         result_csrf = re.finditer(r"\<input type\=\"hidden\" id\=\"result_csrf\" value\=\"(?P<result_csrf>.*?)\"\>",
@@ -96,8 +106,11 @@ class Woc:
             "ver": "2108_chs",
             "anti_csrf": self.anti_csrf  # anti_csrf获取的是cookie中的参数
         }
-
-        response = requests.request("GET", url, headers=headers, params=params, verify=False)
+        try:
+            response = requests.request("GET", url, headers=headers, params=params, verify=False)
+        except requests.exceptions.ConnectionError as e:
+            self.runData['ConnectionError'] = re.search(r"\] (?P<errorStr>.*?)\。", str(e), re.S).group("errorStr")
+            return self.runData
         content = response.content.decode('utf-8')
 
         # html 文本 解析, 获取tr中的内容

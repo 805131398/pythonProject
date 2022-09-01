@@ -9,20 +9,23 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIntValidator
 
 
 class Ui_GuoShun(object):
     def setupUi(self, GuoShun):
         GuoShun.setObjectName("GuoShun")
         GuoShun.setWindowModality(QtCore.Qt.WindowModal)
-        GuoShun.resize(980, 500)
+        GuoShun.resize(1080, 500)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("../../Woc/guoshun.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         GuoShun.setWindowIcon(icon)
         GuoShun.setLayoutDirection(QtCore.Qt.LeftToRight)
         GuoShun.setAutoFillBackground(True)
+
         self.startButton = QtWidgets.QPushButton(GuoShun)
-        self.startButton.setGeometry(QtCore.QRect(10, 20, 261, 71))
+        self.startButton.setGeometry(QtCore.QRect(470, 30, 161, 51))
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei UI")
         font.setPointSize(24)
@@ -30,9 +33,10 @@ class Ui_GuoShun(object):
         self.startButton.setObjectName("startButton")
         self.label_status = QtWidgets.QLabel(GuoShun)
         self.label_status.setGeometry(QtCore.QRect(20, 110, 181, 51))
+
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei UI")
-        font.setPointSize(26)
+        font.setPointSize(20)
         self.label_status.setFont(font)
         self.label_status.setObjectName("label_status")
         self.tableWidget = QtWidgets.QTableWidget(GuoShun)
@@ -56,11 +60,27 @@ class Ui_GuoShun(object):
         self.label_time.setGeometry(QtCore.QRect(20, 190, 451, 51))
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei UI")
-        font.setPointSize(24)
+        font.setPointSize(20)
         font.setBold(False)
         font.setWeight(50)
         self.label_time.setFont(font)
         self.label_time.setObjectName("label_time")
+
+        self.lineEdit = QtWidgets.QLineEdit(GuoShun)
+        self.lineEdit.setGeometry(QtCore.QRect(310, 30, 151, 41))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei UI")
+        font.setPointSize(20)
+        self.lineEdit.setFont(font)
+        self.lineEdit.setFixedWidth(100)
+        self.lineEdit.setObjectName("lineEdit")
+        self.label_status_2 = QtWidgets.QLabel(GuoShun)
+        self.label_status_2.setGeometry(QtCore.QRect(20, 20, 291, 61))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei UI")
+        font.setPointSize(20)
+        self.label_status_2.setFont(font)
+        self.label_status_2.setObjectName("label_status_2")
 
         self.retranslateUi(GuoShun)
         QtCore.QMetaObject.connectSlotsByName(GuoShun)
@@ -79,10 +99,22 @@ class Ui_GuoShun(object):
         item = self.tableWidget.horizontalHeaderItem(3)
         item.setText(_translate("GuoShun", "网络状态", "networkStatus"))
         item = self.tableWidget.horizontalHeaderItem(4)
-        item.setText(_translate("GuoShun", "速率[Kbps]"))
+        item.setText(_translate("GuoShun", "速率[Kbps] - 负载百分比%"))
         item = self.tableWidget.horizontalHeaderItem(5)
         item.setText(_translate("GuoShun", "数据来源", "dataSource"))
         self.label_time.setText(_translate("GuoShun", "最后一次更新时间:"))
+        self.label_status_2.setText(_translate("GuoShun", "上传频率设置(秒):"))
+        self.lineEdit.setText(str(2))
+
+        # 整数校验器 [1,99]
+        intValidator = QIntValidator()
+        intValidator.setRange(1, 3600)
+        self.lineEdit.setValidator(intValidator)
+
+        self.tableWidget.setFixedWidth(1055)
+        self.tableWidget.setColumnWidth(1, 280)
+        self.tableWidget.setColumnWidth(4, 280)
+        self.tableWidget.setColumnWidth(5, 178)
 
 
 class Dialog(QtWidgets.QDialog, QtWidgets.QWidget):
@@ -103,6 +135,11 @@ class Dialog(QtWidgets.QDialog, QtWidgets.QWidget):
             event.accept()
         else:
             event.ignore()
+
+    def keyPressEvent(self, a0: QtGui.QKeyEvent) -> None:
+        # 举例，这里Qt.Key_A注意虽然字母大写，但按键事件对大小写不敏感
+        if a0.key() == Qt.Key_Escape:
+            self.hide()
 
     def changeEvent(self, e):
         if e.type() == QtCore.QEvent.WindowStateChange:
