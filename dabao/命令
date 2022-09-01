@@ -1,0 +1,5 @@
+# 打包
+pyinstaller -F -w -i a001.ico .\__init__.py
+
+# ui转 py
+pyuic5 main.ui -o main.ui.py
