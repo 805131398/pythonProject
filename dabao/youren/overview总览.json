@@ -1,0 +1,71 @@
+{
+  //  一级 是系统
+  "swap": {
+    "free": 0,
+    "total": 0
+  },
+  "conncount": 0,
+  // DHCP分配
+  "leases": [
+    {
+      // 	剩余租期
+      "expires": 42406,
+      // 	MAC-地址
+      "macaddr": "c8:5a:cf:ad:25:cc",
+      // 	IPv4地址
+      "ipaddr": "10.130.100.126",
+      //    主机名
+      "hostname": "LAPTOP-8TUPK8C3"
+    }
+  ],
+  "leases6": {},
+  // 内存
+  "memory": {
+    // 可用数 = (free + buffered) / 1024 + kB
+    // 可用数百分比 = 可用数 / 总数 * 100 + %
+    // 空闲数百分比 = (free / 1024) / (total /1024)  * 100 + %
+    // 缓冲
+    "buffered": 3305472,
+    // 总数
+    "total": 523579392,
+    // 共享
+    "shared": 0,
+    // 可用的
+    "free": 471216128
+  },
+  //  运行时间
+  "uptime": 278725,
+  "wifinets": {},
+  // 网络
+  "wan": {
+    // 类型
+    "proto": "static",
+    // 地址
+    "ipaddr": "192.168.13.39",
+    "link": "/cgi-bin/luci_zhcn/;stok=49379f1376e2a41b08ee6f95f9411568/admin/network/network/wan_wired",
+    // 子网掩码
+    "netmask": "255.255.255.0",
+    // 网关
+    "gwaddr": "192.168.13.254",
+    // 是否到期
+    "expires": -1,
+    // 已连接时间
+    "uptime": 275668,
+    // WAN口名称
+    "ifname": "eth1.3",
+    "dns": [
+      // DNS 1
+      "211.137.191.26",
+      // DNS 2
+      "114.114.114.114"
+    ]
+  },
+  "localtime": "Mon Sep 5 15:32:28 2022",
+  "connmax": 24576,
+  //  除以 65535.0 等于平均负载 	0.47, 0.62, 0.64
+  "loadavg": [
+    30688,
+    40448,
+    41920
+  ]
+}

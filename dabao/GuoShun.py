@@ -34,8 +34,6 @@ class GuoShun(object):
 
         MainWindow.setWindowIcon(QIcon(icon))
 
-        # MainWindow.resize(287, 177)
-        # MainWindow.setFixedSize(287, 177)
         # 创建UI对象
         self.ui = main.Ui_GuoShun()
         # 调用setupUi方法，将设计好的界面-->主窗口上

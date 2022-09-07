@@ -2,5 +2,10 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Modern_GUI_PyDracula_PySide6_or_PyQt6" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/PyQtClient/Resources/Data/Projects/PyQt" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/dxr-pc" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/kivpy" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sherry" vcs="Git" />
   </component>
 </project>

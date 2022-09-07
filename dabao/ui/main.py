@@ -18,9 +18,6 @@ class Ui_GuoShun(object):
         GuoShun.setObjectName("GuoShun")
         GuoShun.setWindowModality(QtCore.Qt.WindowModal)
         GuoShun.resize(1080, 500)
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../../Woc/guoshun.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        GuoShun.setWindowIcon(icon)
         GuoShun.setLayoutDirection(QtCore.Qt.LeftToRight)
         GuoShun.setAutoFillBackground(True)
 
