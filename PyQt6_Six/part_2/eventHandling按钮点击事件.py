@@ -11,7 +11,7 @@ class Window(QWidget):
         # 设置窗口的坐标以及宽高
         self.setGeometry(200, 200, 700, 400)
         # 设置窗口标题
-        self.setWindowTitle("测试Qt6 eventHandling.py 信号事件处理")
+        self.setWindowTitle("测试Qt6 eventHandling按钮点击事件.py 信号事件处理")
         # 设置窗口左上角图标
         self.setWindowIcon(QIcon('resource/image/guoshun.jpg'))
         self.create_widget()

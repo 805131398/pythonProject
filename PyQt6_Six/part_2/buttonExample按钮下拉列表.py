@@ -1,7 +1,7 @@
-from PySide6.QtCore import QSize
-from PySide6.QtWidgets import QApplication, QWidget, QPushButton ,QMenu
-from PySide6.QtGui import QIcon, QFont
 import sys
+
+from PyQt6.QtGui import QIcon, QFont
+from PyQt6.QtWidgets import QWidget, QPushButton, QMenu, QApplication
 
 
 class Window(QWidget):

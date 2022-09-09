@@ -5,7 +5,7 @@ from PySide6.QtWidgets import QApplication, QWidget, QHBoxLayout, QRadioButton, 
 from PySide6.QtGui import QIcon, QFont
 
 
-# 测试 QRadioButton
+# 测试 QRadioButton 单选按钮
 class Window(QWidget):
     def __init__(self):
         super().__init__()

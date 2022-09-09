@@ -8,7 +8,7 @@ from PySide6.QtGui import QIcon, QFont
 import sys
 
 
-# 数字加减框
+# 数字展示框
 class Window(QWidget):
     def __init__(self):
         super().__init__()

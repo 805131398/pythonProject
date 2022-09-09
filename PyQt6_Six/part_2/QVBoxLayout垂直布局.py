@@ -3,6 +3,7 @@ from PySide6.QtWidgets import QApplication, QWidget, QPushButton, QMenu, QLineEd
 from PySide6.QtGui import QIcon, QFont
 import sys
 
+
 # 垂直布局
 class Window(QWidget):
     def __init__(self):
@@ -33,8 +34,6 @@ class Window(QWidget):
         vbox.addSpacing(100)
         # addStretch: 添加拉伸
         vbox.addStretch(5)
-
-
 
 
 app = QApplication(sys.argv)

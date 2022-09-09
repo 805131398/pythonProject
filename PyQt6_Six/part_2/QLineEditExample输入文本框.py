@@ -4,6 +4,7 @@ from PySide6.QtGui import QIcon, QFont
 import sys
 
 
+# QLineEdit 输入文本框
 class Window(QWidget):
     def __init__(self):
         super().__init__()
